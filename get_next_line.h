@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:50:06 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/01 22:33:29 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/06 21:23:06 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -27,7 +28,7 @@ typedef	struct x
 }	y;
 
 char	*ft_strdup(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char const *s2, char *stash);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 

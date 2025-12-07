@@ -6,51 +6,66 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:30 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/06 21:41:36 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/07 20:40:29 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-static char	*get_stash(int fd, char *stash)
+char	*ft_strdup(const char *s)
 {
-	char	buf[BUFFER_SIZE + 1];
-	int		bytes;
+	char	*b;
 
-	bytes = 1;
-	while (!stash && !ft_strchr(stash, '\n') && bytes != 0)
+	b = malloc(ft_strlen(s) + 1);
+	if (!b)
+		return (NULL);
+	ft_strlcpy(b, s, ft_strlen(s) + 1);
+	return (b);
+}
+
+static char	*raw_stash(int fd, char *stash)
+{
+	int		r_bytes;
+	char	*buf;
+
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (free(stash), NULL);
+	r_bytes = 1;
+	while (!ft_strchr(buf, '\n') && r_bytes > 0)
 	{
-		bytes = read (fd, buf, BUFFER_SIZE);
-		if (bytes == -1)
-			return (free(stash), NULL);
-		buf[bytes] = '\0';
-		// 将缓冲区内容追加到stash
-		stash = ft_strjoin(stash, buf, stash);
-		// 旧stash被释放，新stash包含所有数据
+		r_bytes = read(fd, buf, BUFFER_SIZE);
+		if (r_bytes < 0)
+			return (free(stash), free(buf), NULL);
+		else if (r_bytes == 0)
+			break ;
+		stash = ft_strjoin(stash, buf);
+		stash[r_bytes] = '\0';
 	}
+	free(buf);
 	return (stash);
 }
 
-int	main()
+int	main(void)
 {
 	int		fd;
 	char	*stash = NULL;
 
 	fd = open("text.txt", O_RDONLY);
 	if (fd < 0)
-	{	perror("Open has a problem!");
-		return 1;
+	{
+		perror("Open has a problem!");
+		return (1);
 	}
-	stash = get_stash(fd, stash);
+	stash = raw_stash(fd, stash);
 	if (!stash)
 		printf("stash == NULL\n");
 	else
 		printf("stash :%s\n", stash);
-		free(stash);
+	free(stash);
 	close(fd);
 }
-
 
 // char	*get_line(char *stash)
 // {
@@ -87,7 +102,7 @@ int	main()
 // {
 // 	char	*buffer;
 // 	ssize_t	bytes;
-
+//
 // 	buffer = malloc(BUFFER_SIZE + 1);
 // 	if (!buffer)
 // 		return (free(stash), NULL);

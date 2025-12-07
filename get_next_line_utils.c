@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:52 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/06 22:21:24 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/07 20:19:24 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, char *stash)
+/*join s2 at the end of s1*/
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*s;
 	size_t	l1;
@@ -44,10 +45,31 @@ char	*ft_strjoin(char const *s1, char const *s2, char *stash)
 	l2 = ft_strlen(s2);
 	s = malloc(l1 + l2 + 1);
 	if (!s)
-		return (free(stash), NULL);
+		return (NULL);
 	ft_strlcpy(s, s1, l1 + 1);
 	ft_strlcat(s, s2, l1 + l2 + 1);
 	return (s);
+}
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+	size_t	dst_len;
+	size_t	src_len;
+	size_t	total_len;
+
+	dst_len = 0;
+	src_len = 0;
+	total_len = 0;
+	while (dst[dst_len] && dst_len < dstsize)
+		dst_len++;
+	total_len = dst_len + ft_strlen(src);
+	if (dst_len < dstsize)
+	{
+		while (src[src_len] && dst_len + 1 < dstsize)
+			dst[dst_len++] = src[src_len++];
+		dst[dst_len] = '\0';
+	}
+	return (total_len);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
@@ -68,17 +90,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	}
 	dst[i] = '\0';
 	return (srclen);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*b;
-
-	b = malloc(ft_strlen(s) + 1);
-	if (!b)
-		return (NULL);
-	ft_strlcpy(b, s, ft_strlen(s) + 1);
-	return (b);
 }
 
 size_t	ft_strlen(const char *s)

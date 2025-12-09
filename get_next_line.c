@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:30 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/07 20:40:29 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/09 21:26:22 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,25 @@ static char	*raw_stash(int fd, char *stash)
 {
 	int		r_bytes;
 	char	*buf;
+	char	*temp;
 
 	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
 		return (free(stash), NULL);
+	buf[0] = '\0';
 	r_bytes = 1;
-	while (!ft_strchr(buf, '\n') && r_bytes > 0)
+	while ((!stash || ft_strchr(stash, '\n')) && r_bytes > 0)
 	{
 		r_bytes = read(fd, buf, BUFFER_SIZE);
-		if (r_bytes < 0)
-			return (free(stash), free(buf), NULL);
-		else if (r_bytes == 0)
+		printf("r_bytes = %d\n", r_bytes);
+		if (r_bytes <= 0)
 			break ;
-		stash = ft_strjoin(stash, buf);
-		stash[r_bytes] = '\0';
+		buf[r_bytes] = '\0';
+		if (!stash)
+			stash = ft_strdup("");
+		temp = ft_strjoin(stash, buf);
+		free (stash);
+		stash = temp;
 	}
 	free(buf);
 	return (stash);
@@ -50,35 +55,44 @@ static char	*raw_stash(int fd, char *stash)
 int	main(void)
 {
 	int		fd;
-	char	*stash = NULL;
+	char	*stash;
 
+	stash = NULL;
 	fd = open("text.txt", O_RDONLY);
+	printf("buffer size : %d\n", BUFFER_SIZE);
 	if (fd < 0)
 	{
 		perror("Open has a problem!");
 		return (1);
 	}
+	printf("文件打开成功, fd = %d\n", fd);
+	printf("调用raw_stash 之前 stash :%s\n", stash);
 	stash = raw_stash(fd, stash);
+	printf("调用raw_stash 之后 stash :%s\n", stash);
 	if (!stash)
 		printf("stash == NULL\n");
 	else
+	{
 		printf("stash :%s\n", stash);
-	free(stash);
+	}
+	if (stash)
+		free(stash);
 	close(fd);
+	return (0);
 }
 
-// char	*get_line(char *stash)
-// {
-// 	int		i;
-// 	char	*line;
+char	*get_line(char *stash)
+{
+	int		i;
+	char	*line;
 
-// 	i = 0;
-// 	if (!stash || !stash[0])
-// 		return (NULL);
-// 	while (stash[i] && stash[i] != '\n')
-// 		i++;
+	i = 0;
+	if (!stash || !stash[0])
+		return (NULL);
+	while (stash[i] && stash[i] != '\n')
+		i++;
 
-// }
+}
 // /*
 // line 58: if get_stash failed, e.g. read == -1
 // e.g.

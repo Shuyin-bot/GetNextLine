@@ -6,33 +6,26 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:52 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/07 20:19:24 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/09 22:41:16 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
 
-/*returns a pointer to the first occurrence of the character c in the string s*/
-char	*ft_strchr(const char *s, int c)
+/*复制一个字符串，并 返回 malloc 出来的新字符串。*/
+char	*ft_strdup(const char *s)
 {
-	int	i;
+	char	*b;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-	{
-		if ((char)c == s[i])
-			return ((char *)(s + i));
-		i++;
-	}
-	if ((char)c == 0)
-		return ((char *)(s + i));
-	return (NULL);
+	b = malloc(ft_strlen(s) + 1);
+	if (!b)
+		return (NULL);
+	ft_strlcpy(b, s, ft_strlen(s) + 1);
+	return (b);
 }
 
-/*join s2 at the end of s1*/
+/*malloc 一个新字符串，把两个字符串拼在一起。*/
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*s;
@@ -51,6 +44,28 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (s);
 }
 
+/*把 src 内容复制到 你自己给的 buffer 里。*/
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	srclen;
+	size_t	i;
+
+	srclen = 0;
+	while (src[srclen])
+		srclen++;
+	if (size == 0)
+		return (srclen);
+	i = 0;
+	while (src[i] && i < size -1)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (srclen);
+}
+
+/*往 buffer 的 尾部追加字符串（append）*/
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	dst_len;
@@ -70,26 +85,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 		dst[dst_len] = '\0';
 	}
 	return (total_len);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	srclen;
-	size_t	i;
-
-	srclen = 0;
-	while (src[srclen])
-		srclen++;
-	if (size == 0)
-		return (srclen);
-	i = 0;
-	while (src[i] && i < size -1)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (srclen);
 }
 
 size_t	ft_strlen(const char *s)

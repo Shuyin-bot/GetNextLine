@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:50:06 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/11 15:56:27 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/12 00:30:58 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 #  define BUFFER_SIZE 4
 # endif
 
-size_t	ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strdup(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-char	*raw_stash(int fd, char *stash);
+static char	*raw_stash(int fd, char *stash);
+static char *get_line(char * stash);
+size_t		ft_strlen(const char *s);
+char		*ft_strchr(const char *s, int c);
+size_t		ft_strlcpy(char *dst, const char *src, size_t size);
+char		*ft_strdup(const char *s);
+char		*ft_strjoin(char const *s1, char const *s2);
+size_t		ft_strlcat(char *dst, const char *src, size_t dstsize);
+char		*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

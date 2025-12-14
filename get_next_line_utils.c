@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:52 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/09 22:41:16 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/13 10:38:07 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s)
 		return (NULL);
 	ft_strlcpy(s, s1, l1 + 1);
-	ft_strlcat(s, s2, l1 + l2 + 1);
+	l2 = 0;
+	while (s2[l2])
+		s[l1++] = s2[l2++];
+	s[l1] = '\0';
 	return (s);
 }
 
@@ -65,26 +68,23 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (srclen);
 }
 
-/*往 buffer 的 尾部追加字符串（append）*/
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+/*returns a pointer to the first occurrence of the character c in the string s*/
+char	*ft_strchr(const char *s, int c)
 {
-	size_t	dst_len;
-	size_t	src_len;
-	size_t	total_len;
+	int	i;
 
-	dst_len = 0;
-	src_len = 0;
-	total_len = 0;
-	while (dst[dst_len] && dst_len < dstsize)
-		dst_len++;
-	total_len = dst_len + ft_strlen(src);
-	if (dst_len < dstsize)
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
 	{
-		while (src[src_len] && dst_len + 1 < dstsize)
-			dst[dst_len++] = src[src_len++];
-		dst[dst_len] = '\0';
+		if ((char)c == s[i])
+			return ((char *)(s + i));
+		i++;
 	}
-	return (total_len);
+	if ((char)c == 0)
+		return ((char *)(s + i));
+	return (NULL);
 }
 
 size_t	ft_strlen(const char *s)

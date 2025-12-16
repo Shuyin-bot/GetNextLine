@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:30 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/14 01:57:16 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/17 00:46:51 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,20 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 static char	*raw_stash(int fd, char *stash)
 {
-	char	buf[BUFFER_SIZE + 1];
+	char	*buf;
 	ssize_t	r_bytes;
 	char	*temp;
 
-	if (!stash)
-	{
-		stash = ft_strdup("");
-		if (!stash)
-			return (NULL);
-	}
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (free(stash), NULL);
 	while (!ft_strchr(stash, '\n'))
 	{
 		r_bytes = read(fd, buf, BUFFER_SIZE);
 		if (r_bytes == 0)
 			break ;
 		if (r_bytes < 0)
-			return (free(stash), NULL);
+			return (free(buf), free(stash), NULL);
 		buf[r_bytes] = '\0';
 		temp = ft_strjoin(stash, buf);
 		if (!temp)
@@ -60,6 +57,7 @@ static char	*raw_stash(int fd, char *stash)
 		free (stash);
 		stash = temp;
 	}
+	free(buf);
 	return (stash);
 }
 
@@ -106,15 +104,17 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!stash)
+	{
+		stash = ft_strdup("");
+		if (!stash)
+			return (NULL);
+	}
 	stash = raw_stash(fd, stash);
 	if (!stash)
 		return (NULL);
 	if (stash[0] == '\0')
-	{
-		free(stash);
-		stash = NULL;
-		return (NULL);
-	}
+		return (free(stash), stash = NULL, NULL);
 	else
 	{
 		line = get_line(stash);
@@ -140,6 +140,14 @@ char	*get_next_line(int fd)
 // 	printf("after raw_stash, stash:%p\n", (void*)stash);
 // 	line = get_line(stash);
 // 	printf("line:%s", line);
+// 	stash = get_next_line(fd);
+// 	printf("%s", s);
+// 	free(s);
+// 	while(s)
+// 	{
+// 		s = get_next_line(fd);
+// 		printf("%s", s);
+// 		free(s);
 // 	close(fd);
 // 	return (0);
 // }

@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:52 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/13 10:38:07 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/17 00:47:43 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strdup(const char *s)
 }
 
 /*malloc 一个新字符串，把两个字符串拼在一起。*/
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const*s1, char const*s2)
 {
 	char	*s;
 	size_t	l1;

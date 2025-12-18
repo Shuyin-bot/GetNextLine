@@ -6,7 +6,7 @@
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:30 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/18 02:49:22 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/18 19:27:23 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ char	*get_next_line(int fd)
 // int	main(void)
 // {
 // 	int			fd;
-// 	static char	*stash;
+// 	char	*stash;
 // 	char		*line;
 
 // 	fd = open("text1.txt", O_RDONLY);

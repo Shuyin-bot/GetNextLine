@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sqian <sqian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 21:49:30 by sqian             #+#    #+#             */
-/*   Updated: 2025/12/18 02:38:14 by sqian            ###   ########.fr       */
+/*   Updated: 2025/12/18 02:49:22 by sqian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -97,24 +97,24 @@ static char	*new_stash(char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!stash)
-		stash = ft_strdup("");
-	if (!stash)
+	if (!stash[fd])
+		stash[fd] = ft_strdup("");
+	if (!stash[fd])
 		return (NULL);
-	stash = raw_stash(fd, stash);
-	if (!stash)
+	stash[fd] = raw_stash(fd, stash[fd]);
+	if (!stash[fd])
 		return (NULL);
-	if (stash[0] == '\0')
-		return (free(stash), stash = NULL, NULL);
-	line = get_line(stash);
+	if (stash[fd][0] == '\0')
+		return (free(stash[fd]), stash[fd] = NULL, NULL);
+	line = get_line(stash[fd]);
 	if (!line)
-		return (free(stash), stash = NULL, NULL);
-	stash = new_stash(stash);
+		return (free(stash[fd]), stash[fd] = NULL, NULL);
+	stash[fd] = new_stash(stash[fd]);
 	return (line);
 }
 // #include <stdio.h>
